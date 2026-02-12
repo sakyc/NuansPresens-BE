@@ -1,20 +1,20 @@
 import db from "../../config/db.js";
 import { DataTypes } from "sequelize";
 
-let Presensi = db.define('presensi', {
+let Absensi = db.define('absensi', {
     karyawan_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: 'karyawans',
             key: 'id'
-        },
+        }
     },
-    shift_id: {
+    id_karyawan: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'shifts',
+            model: 'kategory_absensis',
             key: 'id'
         }
     },
@@ -22,18 +22,25 @@ let Presensi = db.define('presensi', {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
-    jam_masuk: {
-        type: DataTypes.TIME,
+    kode: {
+        type: DataTypes.STRING
+    },
+    status: {
+        type: DataTypes.ENUM('pending', 'di setujui', 'di tolak'),
+        allowNull: false
+    },
+    keterangan: {
+        type: DataTypes.STRING,
         allowNull: true
     },
-    jam_keluar: {
-        type: DataTypes.TIME,
+    foto: {
+        type: DataTypes.STRING,
         allowNull: true
     },
-    keterlambatan: {
-        type: DataTypes.ENUM('tepat waktu', 'terlambat'),
+    alasan_ditolak: {
+        type: DataTypes.STRING,
         allowNull: true
     }
 })
 
-export default Presensi
+export default Absensi

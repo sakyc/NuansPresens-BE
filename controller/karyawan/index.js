@@ -1,33 +1,46 @@
 import karyawanModel from "../../models/karyawan/index.js";
-import Qr_absensi from "../../models/qr_absensi/index.js";
 import UserModel from "../../models/users/index.js";
+import bcrypt from "bcryptjs";
 import crypto from "crypto";
-import { Op } from "sequelize";
 
 let getKaryawan = (req, res) => {
 }
 
 let addKaryawan = async (req, res) => {
-    let {nama, nip} = req.body
-    let defaultPassword = "Karyawan123"
+    let {nama, nip, jabatan_id, divisi_id, shift_id, email, no_hp, foto, gender} = req.body
+    let generatePassword = crypto.randomBytes(10).toString('hex');
+    let hashPassword = await bcrypt.hash(generatePassword, 10);
 
-    let createUser = await UserModel.create({
-        username: nip,
-        password: defaultPassword,
-        role: "user"
-    })
-    let createKaryawan= await karyawanModel.create({
-        nama: nama,
-        nip: nip,
-        shift_id: 1,
-        user_id: createUser.id
-    })
-    
-    res.json({
-        data: createKaryawan, createUser,
-        nama: nama,
-        nip: nip
-    })
+    try {
+        let createUser = await UserModel.create({
+            username: nip,
+            password: hashPassword,
+            role: "user"
+        })
+        
+        let createKaryawan= await karyawanModel.create({
+            id_jabatan: jabatan_id,
+            id_divisi: divisi_id,
+            id_shift: shift_id,
+            nama: nama,
+            nip: nip,
+            email: email,
+            no_hp: no_hp,
+            foto: foto,
+            gender: gender,
+            user_id: createUser.id
+        })
+        
+        res.json({
+            data: createKaryawan, createUser,
+            nama: nama,
+            nip: nip
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
+    }
 }
 
 export { getKaryawan, addKaryawan };
