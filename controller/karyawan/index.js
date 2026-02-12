@@ -19,9 +19,9 @@ let addKaryawan = async (req, res) => {
         })
         
         let createKaryawan= await karyawanModel.create({
-            id_jabatan: jabatan_id,
-            id_divisi: divisi_id,
-            id_shift: shift_id,
+            jabatan_id: jabatan_id,
+            divisi_id: divisi_id,
+            shift_id: shift_id,
             nama: nama,
             nip: nip,
             email: email,
@@ -33,6 +33,7 @@ let addKaryawan = async (req, res) => {
         
         res.json({
             data: createKaryawan, createUser,
+            password: generatePassword,
             nama: nama,
             nip: nip
         })
@@ -43,4 +44,20 @@ let addKaryawan = async (req, res) => {
     }
 }
 
-export { getKaryawan, addKaryawan };
+let chectPassword = async (req, res) => {
+    try {
+        let getusers = await UserModel.findOne({
+            where: {id:5}
+        })
+        let checkPassword = await bcrypt.compare('12006675d147998faf8', getusers.password);
+        res.json({
+            data: getusers,
+            isPasswordValid: checkPassword
+        })
+        
+    } catch (error) {
+        
+    }
+}
+
+export { getKaryawan, addKaryawan, chectPassword };

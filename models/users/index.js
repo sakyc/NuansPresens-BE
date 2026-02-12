@@ -11,7 +11,7 @@ let User = db.define('users', {
         allowNull: false,
     },
     role: {
-        type: DataTypes.ENUM('admin', 'user'),
+        type: DataTypes.ENUM('admin', 'user', 'manager'),
         allowNull: false
     }
     

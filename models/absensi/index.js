@@ -18,7 +18,11 @@ let Absensi = db.define('absensi', {
             key: 'id'
         }
     },
-    tanggal: {
+    tanggal_mulai: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
+    },
+    tanggal_selesai: {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
@@ -40,6 +44,15 @@ let Absensi = db.define('absensi', {
     alasan_ditolak: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    verified_by: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'users',
+            key: 'id'
+
+        }
     }
 })
 
