@@ -1,4 +1,7 @@
-import Jabatan from "../../models/jabatan"
+import Jabatan from "../../models/jabatan/index.js"
+import Shift from "../../models/shift/index.js"
+import Divisi from "../../models/divisi/index.js"
+import CategoryAbsen from "../../models/kategory_absensi/index.js"
 
 let Seeder = async (req, res) => {
     try {
@@ -21,16 +24,21 @@ let Seeder = async (req, res) => {
             { nama_divisi: "DevOps Engineer" }
         ])
 
-        let createCategoryAbsen = await absen
+        let createCategoryAbsen = await CategoryAbsen.bulkCreate([
+            { nama_kategori_absensi: "izin" },
+            { nama_kategori_absensi: "sakit" },
+            { nama_kategori_absensi: "cuti" },
+        ])
 
-
+        
 
         res.json({
             message: "Semua Seeder telah di jalankan",
             data: {
                 jabatan: createJabatan,
                 shift: createShift,
-                divisi: createDivisi
+                divisi: createDivisi,
+                createCategoryAbsen
             }
         })
     } catch (error) {
@@ -39,3 +47,5 @@ let Seeder = async (req, res) => {
         })
     }
 }
+
+export default Seeder

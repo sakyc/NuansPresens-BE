@@ -10,23 +10,24 @@ let Absensi = db.define('absensi', {
             key: 'id'
         }
     },
-    id_karyawan: {
+    kategori_absensi_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'kategory_absensis',
+            model: 'kategori_absensis',
             key: 'id'
         }
     },
-    tanggal: {
+    tanggal_mulai: {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
-    kode: {
-        type: DataTypes.STRING
+    tanggal_selesai: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
     },
     status: {
-        type: DataTypes.ENUM('pending', 'di setujui', 'di tolak'),
+        type: DataTypes.ENUM('pending', 'disetujui', 'ditolak'),
         allowNull: false
     },
     keterangan: {
@@ -40,7 +41,16 @@ let Absensi = db.define('absensi', {
     alasan_ditolak: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    verified_by: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: 'users',
+            key: 'id'
+
+        }
     }
 })
-
+ 
 export default Absensi

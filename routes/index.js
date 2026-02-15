@@ -10,17 +10,17 @@ import '../models/absensi/index.js' // tm table absensi
 import '../models/presensi/index.js'; // tm table presensi 
 
 
-import { getKaryawan, addKaryawan } from '../controller/karyawan/index.js';
+import { getKaryawan, addKaryawan, chectPassword } from '../controller/karyawan/index.js';
 import { dinamisQr, SeederQR } from '../controller/qr_absen/index.js';
 import { seederShift } from '../controller/shift/index.js';
 import { getPresensi } from '../controller/transaksi/presensi/index.js';
-import { seederJabatan } from '../controller/jabatan/inde.js';
+import Seeder from '../controller/seeder/index.js';
 
 let router = express.Router();
 
+//seeder
+router.get('/seeder-112', Seeder);
 
-// jabatan
-router.get("/seeder-jabatan", seederJabatan);
 
 // transaksi presensi
 router.post('/api/presensi', getPresensi);
@@ -29,6 +29,7 @@ router.post('/api/presensi', getPresensi);
 //karyawan
 router.get('/api/karyawan', getKaryawan);
 router.post('/api/add-karyawan', addKaryawan);
+router.get('/check-password', chectPassword);
 
 //qr absen
 router.post("/api/generate-qr", dinamisQr);
