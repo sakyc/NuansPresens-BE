@@ -30,7 +30,7 @@ let Presensi = db.define('presensi', {
         type: DataTypes.TIME,
         allowNull: true
     },
-    keterlambatan: {
+    status_kehadiran: {
         type: DataTypes.ENUM('tepat waktu', 'terlambat'),
         allowNull: true
     }

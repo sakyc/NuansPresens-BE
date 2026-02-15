@@ -25,9 +25,9 @@ let Seeder = async (req, res) => {
         ])
 
         let createCategoryAbsen = await CategoryAbsen.bulkCreate([
-            { nama_kategory: "izin" },
-            { nama_kategory: "sakit" },
-            { nama_kategory: "cuti" },
+            { nama_kategori_absensi: "izin" },
+            { nama_kategori_absensi: "sakit" },
+            { nama_kategori_absensi: "cuti" },
         ])
 
         

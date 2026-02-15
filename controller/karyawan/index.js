@@ -15,7 +15,7 @@ let addKaryawan = async (req, res) => {
         let createUser = await UserModel.create({
             username: nip,
             password: hashPassword,
-            role: "user"
+            role: "karyawan"
         })
         
         let createKaryawan= await karyawanModel.create({

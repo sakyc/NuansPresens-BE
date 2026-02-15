@@ -5,6 +5,7 @@ let karyawan = db.define('karyawan', {
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
         references: {
             model: 'users',
             key: 'id'
@@ -41,10 +42,12 @@ let karyawan = db.define('karyawan', {
     nip: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     no_hp: {
         type: DataTypes.STRING,
@@ -55,7 +58,7 @@ let karyawan = db.define('karyawan', {
         allowNull: false
     },
     gender:{
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM('L', 'P'),
         allowNull: false
     },
 })

@@ -4,14 +4,15 @@ import { DataTypes } from "sequelize";
 let User = db.define('users', {
     username: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false,
     },
     role: {
-        type: DataTypes.ENUM('admin', 'user', 'manager'),
+        type: DataTypes.ENUM('admin', 'karyawan', 'manager'),
         allowNull: false
     }
     
