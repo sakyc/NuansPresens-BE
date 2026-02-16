@@ -7,5 +7,5 @@ let Kategory_absen = db.define('kategori_absensi', {
         allowNull: false
     }
 })
-
+ 
 export default Kategory_absen 
