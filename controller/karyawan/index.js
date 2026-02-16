@@ -8,7 +8,7 @@ let getKaryawan = (req, res) => {
 
 let addKaryawan = async (req, res) => {
     let {nama, nip, jabatan_id, divisi_id, shift_id, email, no_hp, foto, gender} = req.body
-    let generatePassword = crypto.randomBytes(10).toString('hex');
+    let generatePassword = "sua";
     let hashPassword = await bcrypt.hash(generatePassword, 10);
 
     try {
@@ -40,6 +40,7 @@ let addKaryawan = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: error.message
+            
         })
     }
 }

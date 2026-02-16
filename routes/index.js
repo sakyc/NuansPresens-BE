@@ -15,16 +15,19 @@ import { dinamisQr, SeederQR } from '../controller/qr_absen/index.js';
 import { seederShift } from '../controller/shift/index.js';
 import { getPresensi } from '../controller/transaksi/presensi/index.js';
 import Seeder from '../controller/seeder/index.js';
+import { login } from '../controller/auth/karyawan/index.js';
 
 let router = express.Router();
 
 //seeder
 router.get('/seeder-112', Seeder);
 
+//auth karyawwan
+router.post('/api/auth-employe', login)
+
 
 // transaksi presensi
 router.post('/api/presensi', getPresensi);
-//users
 
 //karyawan
 router.get('/api/karyawan', getKaryawan);
