@@ -9,7 +9,7 @@ let dinamisQr = async (req, res) => {
         
         
         await Qr_absensi.update({ 
-            code: newCode, 
+            token: newCode, 
             type: type,
             status: 'aktif',
             updatedAt: new Date()
@@ -36,16 +36,14 @@ let dinamisQr = async (req, res) => {
 let SeederQR = async (req, res) => {
     await Qr_absensi.bulkCreate([
         {
-            code: 'asdfafsafafda',
+            token: 'asdfafsafafda',
             status: 'aktif',
             type: 'masuk',
-            shift_id: 1
         },
         {
-            code: 'afasf3faafaf',
+            token: 'afasf3faafaf',
             status: 'aktif',
             type: 'keluar',
-            shift_id: 1
         }
     ]);
     res.json({ message: "Seeder qr berhasil dijalankan" });

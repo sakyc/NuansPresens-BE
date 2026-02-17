@@ -7,7 +7,7 @@ let getKaryawan = (req, res) => {
 }
 
 let addKaryawan = async (req, res) => {
-    let {nama, nip, jabatan_id, divisi_id, shift_id, email, no_hp, foto, gender} = req.body
+    let {nama, nip, jabatan_id, divisi_id, shift_id, email, no_hp, foto, gender, alamat} = req.body
     let generatePassword = "sua";
     let hashPassword = await bcrypt.hash(generatePassword, 10);
 
@@ -28,6 +28,7 @@ let addKaryawan = async (req, res) => {
             no_hp: no_hp,
             foto: foto,
             gender: gender,
+            alamat: alamat,
             user_id: createUser.id
         })
         

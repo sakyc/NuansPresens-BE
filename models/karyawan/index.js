@@ -61,6 +61,10 @@ let karyawan = db.define('karyawan', {
         type: DataTypes.ENUM('L', 'P'),
         allowNull: false
     },
+    alamat:{
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 })
 
 export default karyawan

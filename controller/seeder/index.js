@@ -13,8 +13,8 @@ let Seeder = async (req, res) => {
         ])
 
         let createShift = await Shift.bulkCreate([
-            { nama: "Shift 1", jam_mulai: "07:00:00", jam_selesai: "15:00:00" },
-            { nama: "Shift 2", jam_mulai: "15:00:00", jam_selesai: "23:00:00" }
+            { nama_shift: "Shift 1", jam_mulai: "07:00:00", jam_selesai: "15:00:00" },
+            { nama_shift: "Shift 2", jam_mulai: "15:00:00", jam_selesai: "23:00:00" }
         ])
 
         let createDivisi = await Divisi.bulkCreate([
