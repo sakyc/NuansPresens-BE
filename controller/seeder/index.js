@@ -2,6 +2,7 @@ import Jabatan from "../../models/jabatan/index.js"
 import Shift from "../../models/shift/index.js"
 import Divisi from "../../models/divisi/index.js"
 import CategoryAbsen from "../../models/kategory_absensi/index.js"
+import Qr_absensi from "../../models/qr_absensi/index.js"
 
 let Seeder = async (req, res) => {
     try {
@@ -30,7 +31,18 @@ let Seeder = async (req, res) => {
             { nama_kategori_absensi: "cuti" },
         ])
 
-        
+        await Qr_absensi.bulkCreate([
+            {
+                token: 'asdfafsafafda',
+                status: 'aktif',
+                type: 'masuk',
+            },
+            {
+                token: 'afasf3faafaf',
+                status: 'aktif',
+                type: 'keluar',
+            }
+        ]);
 
         res.json({
             message: "Semua Seeder telah di jalankan",

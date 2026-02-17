@@ -3,7 +3,7 @@ import cors from "cors";
 import Routes from "./routes/index.js";
 import db from "./config/db.js";
 
-let port = process.env.PORT || 2000;
+let port = 2000;
 let app = express();
 
 app.use(cors());
