@@ -34,6 +34,13 @@ let Presensi = db.define('presensi', {
         type: DataTypes.ENUM('tepat waktu', 'terlambat'),
         allowNull: true
     }
+},{
+    indexes: [
+        {
+            unique: true,
+            fields: ['karyawan_id', 'tanggal']
+        }
+    ]
 })
 
 export default Presensi
