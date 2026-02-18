@@ -49,6 +49,7 @@ let testPresensi = async (req, res) => {
             return res.status(400).json(
               {
                 message: "Token tidak sesuai",
+                status: "gagal",
                 data: {
                   curent_token: curent_token,
                   token_karyawwan: token_karyawwan
@@ -64,7 +65,8 @@ let testPresensi = async (req, res) => {
             jam_masuk: now.format("HH:mm:ss"),
         })
         res.json({
-            message: "berhasil horeee",
+            message: "success",
+            status: "berhasil",
             check: check,
             data: createPresensi
             
