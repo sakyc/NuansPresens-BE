@@ -13,7 +13,7 @@ import '../models/presensi/index.js'; // tm table presensi
 import { getKaryawan, addKaryawan, chectPassword } from '../controller/karyawan/index.js';
 import { dinamisQr, SeederQR } from '../controller/qr_absen/index.js';
 import { seederShift } from '../controller/shift/index.js';
-import { getPresensi, testPresensi } from '../controller/transaksi/presensi/index.js';
+import {  PresensiCheckin } from '../controller/transaksi/presensi/index.js';
 import Seeder from '../controller/seeder/index.js';
 import { login } from '../controller/auth/karyawan/index.js';
 
@@ -27,8 +27,7 @@ router.post('/api/auth-employe', login)
 
 
 // transaksi presensi
-router.post('/api/presensi-test2', getPresensi);
-router.post('/api/presensi', testPresensi);
+router.post('/api/presensi', PresensiCheckin);
 
 
 //karyawan
