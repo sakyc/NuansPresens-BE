@@ -4,7 +4,6 @@ import Qr_absensi from '../../models/qr_absensi/index.js';
 let dinamisQr = async (req, res) => {
     try {
         const { type } = req.body; // 'masuk' atau 'keluar'
-        let idType = type === 'masuk' ? 1 : 2;
         const newCode = crypto.randomBytes(12).toString('hex');
         
         
@@ -14,7 +13,7 @@ let dinamisQr = async (req, res) => {
             status: 'aktif',
             updatedAt: new Date()
         }, { 
-            where: { id: idType } 
+            where: { type: type } 
         });
 
         
@@ -33,19 +32,24 @@ let dinamisQr = async (req, res) => {
     }
 }
 
-let SeederQR = async (req, res) => {
-    await Qr_absensi.bulkCreate([
-        {
-            token: 'asdfafsafafda',
-            status: 'aktif',
-            type: 'masuk',
-        },
-        {
-            token: 'afasf3faafaf',
-            status: 'aktif',
-            type: 'keluar',
-        }
-    ]);
-    res.json({ message: "Seeder qr berhasil dijalankan" });
+let getQr_status = async (req, res) => {
+    const { type } = req.body;
+    try {
+        const qr = await Qr_absensi.findOne({ where: { type: type } });
+        res.json({ status: qr });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
-export { dinamisQr, SeederQR };
+
+let closeQr = async (req, res) => {
+    const { type } = req.body;
+    try {
+        await Qr_absensi.update({ status: 'non-aktif' }, { where: { type: type } });
+        res.json({ status: 'success' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+export { dinamisQr, getQr_status, closeQr };

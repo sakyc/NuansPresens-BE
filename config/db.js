@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize('test_absensi_final', 'root', '', {
+const db = new Sequelize('nuanpresens_app', 'root', '', {
     host: 'localhost',
     dialect: 'mysql'
 });
