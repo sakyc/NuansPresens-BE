@@ -13,7 +13,7 @@ dayjs.extend(timezone)
 
 let PresensiCheckin = async (req, res) => {
     let { type, id_karyawan, token } = req.body;
-    const now = dayjs().tz("Asia/Jakarta")
+    const now = dayjs()
     const today = now.format("YYYY-MM-DD")
     try {
         let getToken = await Qr_absensi.findOne({
@@ -38,24 +38,25 @@ let PresensiCheckin = async (req, res) => {
 
         let check = now.isBetween(jam_shift_mulai, jam_shift_selesai)
 
-        if(!check){
-            return res.status(400).json({message: "Tidak bisa absen di luar shift"})
-        }
-
+        
         let curent_token = getToken.token
         let token_karyawwan = token
         
         if(curent_token !== token_karyawwan){
             return res.status(400).json(
-              {
-                message: "Token tidak sesuai",
-                status: "gagal",
-                data: {
-                  curent_token: curent_token,
-                  token_karyawwan: token_karyawwan
-                }
-
-              })
+                {
+                    message: "Token tidak sesuai",
+                    status: "gagal",
+                    data: {
+                        curent_token: curent_token,
+                        token_karyawwan: token_karyawwan
+                    }
+                    
+                })
+            }
+            
+        if(!check){
+            return res.status(400).json({message: "Tidak bisa absen di luar shift"})
         }
 
         let createPresensi = await Presensi.create({
@@ -83,5 +84,64 @@ let PresensiCheckin = async (req, res) => {
     }
 };
 
+let PresensiCheckout = async (req, res) => {
+    let { id_karyawan, token } = req.body;
+    const now = dayjs()
+    const today = now.format("YYYY-MM-DD")
 
-export { PresensiCheckin };
+    try {
+
+        //  Ambil presensi hari ini
+        let presensiHariIni = await Presensi.findOne({
+            where: {
+                karyawan_id: id_karyawan,
+                tanggal: today
+            }
+        });
+
+        if (!presensiHariIni) {
+            return res.status(400).json({
+                message: "Kamu belum melakukan check-in hari ini"
+            });
+        }
+
+        //  Cek apakah sudah checkout
+        if (presensiHariIni.jam_keluar) {
+            return res.status(400).json({
+                message: "Kamu sudah melakukan check-out hari ini"
+            });
+        }
+
+        // 3 Validasi token checkout
+        let getToken = await Qr_absensi.findOne({
+            where: {
+                type: "keluar"
+            }
+        });
+
+        if (getToken.token !== token) {
+            return res.status(400).json({
+                message: "Token tidak sesuai"
+            });
+        }
+
+        //  Update jam keluar
+        await presensiHariIni.update({
+            jam_keluar: now.format("HH:mm:ss")
+        });
+
+        return res.json({
+            message: "Checkout berhasil",
+            status: "berhasil",
+            data: presensiHariIni
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
+
+export { PresensiCheckin, PresensiCheckout };

@@ -18,6 +18,14 @@ let Absensi = db.define('absensi', {
             key: 'id'
         }
     },
+    shift_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'shifts',
+            key: 'id'
+        }
+    },
     tanggal_mulai: {
         type: DataTypes.DATEONLY,
         allowNull: false
