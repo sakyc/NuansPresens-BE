@@ -35,8 +35,8 @@ let dinamisQr = async (req, res) => {
 let getQr_status = async (req, res) => {
     const { type } = req.body;
     try {
-        const qr = await Qr_absensi.findOne({ where: { type: type } });
-        res.json({ status: qr });
+        const data = await Qr_absensi.findOne({ where: { type: type } });
+        res.json({ status: data.status });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -51,5 +51,7 @@ let closeQr = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+
 
 export { dinamisQr, getQr_status, closeQr };

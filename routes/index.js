@@ -16,9 +16,10 @@ import {
 } from '../controller/karyawan/index.js';
 import { closeQr, dinamisQr, getQr_status } from '../controller/qr_absen/index.js';
 import { seederShift } from '../controller/shift/index.js';
-import { PresensiCheckin } from '../controller/transaksi/presensi/index.js';
+import { PresensiCheckin, PresensiCheckout } from '../controller/transaksi/presensi/index.js';
 import Seeder from '../controller/seeder/index.js';
 import { login } from '../controller/auth/karyawan/index.js';
+import { PengajuanAbsensi } from '../controller/transaksi/absensi/index.js';
 
 let router = express.Router();
 
@@ -29,8 +30,10 @@ router.get('/seeder-112', Seeder);
 router.post('/api/auth-employe', login);
 
 // transaksi presensi
-router.post('/api/presensi', PresensiCheckin);
-
+router.post('/api/presensi/check-in', PresensiCheckin);
+router.post('/api/presensi/check-out', PresensiCheckout);
+// transaksi absensi
+router.post('/api/absensi', PengajuanAbsensi)
 //karyawan
 router.get('/api/karyawan', getKaryawan);
 router.post('/api/add-karyawan', addKaryawan);
