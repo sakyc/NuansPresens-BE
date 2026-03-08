@@ -48,8 +48,6 @@ let PengajuanAbsensi = async (req, res) => {
                 status: "gagal"
             });
         }
-
-        
         const tglMulai = dayjs(tanggal_mulai);
         const tglSelesai = tanggal_selesai ? dayjs(tanggal_selesai) : tglMulai;
 
@@ -65,8 +63,6 @@ let PengajuanAbsensi = async (req, res) => {
                 status: "gagal"
             });
         }
-
-        
         // Cek karyawan ada
         
         const karyawan = await Karyawan.findByPk(karyawan_id);
@@ -76,10 +72,6 @@ let PengajuanAbsensi = async (req, res) => {
                 status: "gagal"
             });
         }
-
-        
-        //  Cek bentrok dengan pengajuan lain
-        
          // Cek apakah sudah ada pengajuan di rentang tanggal yang sama
         const cekBentrok = await Absensi.findOne({
             where: {
@@ -100,9 +92,6 @@ let PengajuanAbsensi = async (req, res) => {
                 message: `Anda sudah memiliki pengajuan di rentang ${cekBentrok.tanggal_mulai} - ${cekBentrok.tanggal_selesai}`
             });
         }
-
-    
-        
         // SIMPAN PENGAJUAN
         
         let data = await Absensi.create({
@@ -160,7 +149,6 @@ let PengajuanAbsensi = async (req, res) => {
                 status: "gagal"
             });
         }
-
         
         console.error("PengajuanAbsensi Error:", error);
         
@@ -172,6 +160,39 @@ let PengajuanAbsensi = async (req, res) => {
     }
 };
 
+let UpdateAbsensi = async (req, res) => {
+    let {status, alasan_ditolak, id} = req.body
+    try {
+        let [updateAbsensi] = await Absensi.update(
+            {
+                status: status, 
+                alasan: alasan_ditolak
+                
+            }, 
+            {
+                where: {id: id}
+            })
+
+        if (updateAbsensi === 0) {
+            return res.status(404).json({
+                message: "Data absensi tidak ditemukan!",
+                status: "gagal"
+            })
+        }
+
+        return res.status(200).json({
+            message: "Status berhasil diperbarui!",
+            status: "berhasil",
+            data: updateAbsensi
+        })
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+}
+
+
 export {
-    PengajuanAbsensi
+    PengajuanAbsensi,
+    UpdateAbsensi
 };

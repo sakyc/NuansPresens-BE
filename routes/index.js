@@ -19,21 +19,26 @@ import { seederShift } from '../controller/shift/index.js';
 import { PresensiCheckin, PresensiCheckout } from '../controller/transaksi/presensi/index.js';
 import Seeder from '../controller/seeder/index.js';
 import { login } from '../controller/auth/karyawan/index.js';
-import { PengajuanAbsensi } from '../controller/transaksi/absensi/index.js';
+import { PengajuanAbsensi, UpdateAbsensi } from '../controller/transaksi/absensi/index.js';
+import { GetAbsensi } from '../controller/absensi/index.js';
 
 let router = express.Router();
 
 //seeder
 router.get('/seeder-112', Seeder);
-
 //auth karyawwan
 router.post('/api/auth-employe', login);
+
+
+//absensi
+router.get('/api/get-absensi', GetAbsensi); 
 
 // transaksi presensi
 router.post('/api/presensi/check-in', PresensiCheckin);
 router.post('/api/presensi/check-out', PresensiCheckout);
 // transaksi absensi
 router.post('/api/absensi', PengajuanAbsensi)
+router.post('/api/update-absensi', UpdateAbsensi);
 //karyawan
 router.get('/api/karyawan', getKaryawan);
 router.post('/api/add-karyawan', addKaryawan);
