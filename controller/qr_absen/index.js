@@ -3,7 +3,7 @@ import Qr_absensi from '../../models/qr_absensi/index.js';
 
 let dinamisQr = async (req, res) => {
     try {
-        const { type } = req.body; // 'masuk' atau 'keluar'
+        const { type } = req.body; 
         const newCode = crypto.randomBytes(12).toString('hex');
         
         

@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { Karyawan, User, Divisi, Shift, Jabatan } from "../../../models/index.js";
 
 const login = async (req, res) => {
@@ -23,6 +24,13 @@ const login = async (req, res) => {
                 massage: "Password salah" + getUser.id
             })
         }
+
+        let tokenJWT = jwt.sign({
+            id: getUser.id
+        }, "nuansua", {
+            expiresIn: "1d"
+        })
+
         const IdUser = getUser.id
         const getkaryawan = await User.findOne({
             where: {
@@ -45,7 +53,8 @@ const login = async (req, res) => {
         }
         res.status(200).json({
             massage: "success",
-            data: getkaryawan 
+            data: getkaryawan,
+            token: tokenJWT
         })
     
     } catch (error) {
