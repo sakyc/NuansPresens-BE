@@ -35,6 +35,14 @@ let karyawan = db.define('karyawan', {
             key: 'id'
         }
     },
+    atasan_id:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: 'karyawans',
+            key: 'id'
+        }
+    },
     nama: {
         type: DataTypes.STRING,
         allowNull: false
@@ -63,6 +71,10 @@ let karyawan = db.define('karyawan', {
     },
     alamat:{
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    status:{
+        type: DataTypes.ENUM('aktif', 'tidak-aktif'),
         allowNull: false
     }
 })
