@@ -57,6 +57,15 @@ let karyawan = db.define('karyawan', {
         allowNull: false,
         unique: true
     },
+    point_karyawan: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    tanggal_lahir: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
+    },
     no_hp: {
         type: DataTypes.STRING,
         allowNull: false

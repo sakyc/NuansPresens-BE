@@ -9,6 +9,10 @@ import priodePenilaian from "./TABLE_PENILAIAN/periode_penilaian/index.js";
 import penilaian from "./TABLE_PENILAIAN/penilaian/index.js";
 import detailPenilaian from "./TABLE_PENILAIAN/detail_penilaian/index.js";
 import kategoryPenilaian from "./TABLE_PENILAIAN/kategori_penilaian/index.js";
+import UserTokenInc from "./TABLE_POINT/user_token/index.js"
+import FlexibilityItemInc from "./TABLE_POINT/point_katalog_item/index.js"
+import UserToken from "./TABLE_POINT/user_token/index.js"
+import FlexibilityItem from "./TABLE_POINT/point_katalog_item/index.js"
 
 // --- RELASI MASTER KARYAWAN ---
 User.hasOne(Karyawan, { foreignKey: "user_id", as: "karyawan" });
@@ -25,9 +29,19 @@ Karyawan.belongsTo(Divisi, { foreignKey: "divisi_id" });
 
 Karyawan.hasMany(Absensi, { foreignKey: "karyawan_id" });
 Absensi.belongsTo(Karyawan, { foreignKey: "karyawan_id" });
+//relasai sistgem poiint
+// Relasi UserToken ke FlexibilityItem
+UserToken.belongsTo(FlexibilityItem, { 
+    foreignKey: "item_id", 
+    as: "item_detail" 
+});
 
-//  RELASI SISTEM PENILAIAN 
-
+// Kebalikannya (opsional, jika butuh akses dari sisi Item)
+FlexibilityItem.hasMany(UserToken, { 
+    foreignKey: "item_id", 
+    as: "tokens" 
+});
+// relasi penilaian
 // 1. Hubungan Periode ke Penilaian (One-to-Many)
 priodePenilaian.hasMany(penilaian, { 
     foreignKey: "priode",
@@ -65,5 +79,7 @@ export {
     priodePenilaian, 
     penilaian, 
     detailPenilaian, 
-    kategoryPenilaian 
+    kategoryPenilaian,
+    UserTokenInc,
+    FlexibilityItemInc
 };
