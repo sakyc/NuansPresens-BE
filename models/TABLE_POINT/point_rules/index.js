@@ -7,7 +7,7 @@ const PointRule = db.define('point_rules', {
         allowNull: false
     },
     operator: {
-        type: DataTypes.ENUM('>', '<', '=', '>=', '<='), 
+        type: DataTypes.ENUM('>', '<', '=', '>=', '<=', "ALFA"), 
         allowNull: false
     },
     kondisi_value: {
