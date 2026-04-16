@@ -2,8 +2,8 @@ import { Karyawan as karyawanModel, User as UserModel, Jabatan as JabatanModel, 
 import bcrypt from "bcryptjs";
 
 let addKaryawan = async (req, res) => {
-    let {nama, nip, jabatan_id, divisi_id, shift_id, email, no_hp, foto, gender, alamat, atasan_id} = req.body
-
+    let {nama, nip, jabatan_id, divisi_id, shift_id, email, no_hp, foto, gender, alamat, atasan_id, password, role} = req.body
+    let setRole = role || "karyawan";
     try {
         // validasi atasan
         if (atasan_id) {
@@ -25,13 +25,13 @@ let addKaryawan = async (req, res) => {
             }
         }
 
-        let generatePassword = "Karyawan123";
+        let generatePassword = password || "Karyawan123";
         let hashPassword = await bcrypt.hash(generatePassword, 10);
 
         let createUser = await UserModel.create({
             username: nip,
             password: hashPassword,
-            role: "karyawan"
+            role: setRole
         });
         
         let createKaryawan = await karyawanModel.create({

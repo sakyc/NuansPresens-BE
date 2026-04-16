@@ -30,15 +30,19 @@ let Presensi = db.define('presensi', {
         type: DataTypes.TIME,
         allowNull: true
     },
-    status_kehadiran: {
+    status_masuk: {
         type: DataTypes.ENUM('tepat waktu', 'terlambat'),
         allowNull: true
+    },
+    status_keluar: {
+        type: DataTypes.ENUM('normal', 'pulang cepat'),
+        allowNull: true,
     }
 },{
     indexes: [
         {
             unique: true,
-            fields: ['karyawan_id', 'tanggal']
+            fields: ['karyawan_id', 'tanggal'] 
         }
     ]
 })

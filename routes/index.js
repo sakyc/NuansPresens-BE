@@ -12,6 +12,11 @@ import '../models/TABLE_PENILAIAN/kategori_penilaian/index.js'; //
 import '../models/TABLE_PENILAIAN/penilaian/index.js'; // 
 import '../models/TABLE_PENILAIAN/detail_penilaian/index.js'; // 
 import '../models/TABLE_PENILAIAN/periode_penilaian/index.js'; // 
+import '../models/TABLE_POINT/point_katalog_item/index.js'; //
+import '../models/TABLE_POINT/point_riwayat/index.js';
+import '../models/TABLE_POINT/user_token/index.js';
+import '../models/TABLE_POINT/point_rules/index.js';
+
 
 import {
   addKaryawan,
@@ -41,12 +46,27 @@ import seedKategoriPenilaian from '../controller/penilaian/seeder-penilaian.js';
 import { generatePeriode, getAllPeriode, getPeriodeByRole, updatePeriode } from '../controller/penilaian/generate-penilaian/index.js';
 import { getKategori_penilaian} from '../controller/penilaian/kategory/index.js';
 import { simpanDetailPenilaian } from '../controller/penilaian/transaksi/index.js';
+import { test_selisih } from '../controller/api_testing/index.js';
+import { bonusPoint, getKaryawanToken, getKatalog, getpoint, getRanking, getRiwayat, redeemPoint } from '../controller/sistem_point/index.js';
+import seeder_karyawan_user from '../controller/karyawan/seeder/index.js';
 
 let router = express.Router();
 
+//testing
+router.get('/test', test_selisih)
 //seeder
 router.get('/seeder-112', Seeder);
 router.get('/seeder-penilaian', seedKategoriPenilaian);
+router.get('/seeder-karyawan-user', seeder_karyawan_user);
+//sistem point
+router.get('/api/get-point', getpoint);
+router.get('/api/get-riwayat-point', getRiwayat);
+router.get('/api/get-ranking', getRanking);
+router.get('/api/get-katalog', getKatalog);
+router.get('/api/get-karyawan-token', getKaryawanToken);
+router.post('/api/redeem-point', redeemPoint);
+router.post('/api/bonus-point', bonusPoint);
+
 //penilaian
 router.post('/api/generate-penilaian', generatePeriode);
 router.get('/api/get-all-periode/:userId', getAllPeriode);
