@@ -123,7 +123,6 @@ try {
         break;
     }
     }
-    // --- LOGIKA PERLINDUNGAN VOUCHER ---
     // Hanya cek voucher jika karyawan terkena PENALTY (pointApplied < 0)
     if (pointApplied < 0 && selisihMenit > 0) {
     const voucherValid = await UserTokenInc.findOne({

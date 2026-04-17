@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import Routes from "./routes/index.js";
 import db from "./config/db.js";
+import './controller/cron/index.js';
 import { createRouteHandler } from "uploadthing/express";
 import { uploadRouter } from "./upload/uploadthing.js";
 
