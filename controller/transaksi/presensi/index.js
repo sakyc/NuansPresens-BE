@@ -124,7 +124,7 @@ try {
     }
     }
     // Hanya cek voucher jika karyawan terkena PENALTY (pointApplied < 0)
-    if (pointApplied < 0 && selisihMenit > 0) {
+    if (pointApplied <= 15 && selisihMenit > 0) {
     const voucherValid = await UserTokenInc.findOne({
         where: {
         user_id: getkaryawan.user_id,

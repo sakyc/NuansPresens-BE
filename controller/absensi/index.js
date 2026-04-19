@@ -1,6 +1,6 @@
 import Absensi from "../../models/absensi/index.js";
 import { Karyawan } from "../../models/index.js";
-let GetAbsensi = async (req, res) => {
+let GetPengajuan = async (req, res) => {
     try {
         let getAbsensi = await Absensi.findAll({
             include:[
@@ -17,4 +17,4 @@ let GetAbsensi = async (req, res) => {
 }
 
 
-export { GetAbsensi }
+export { GetPengajuan }
