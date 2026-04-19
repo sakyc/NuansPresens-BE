@@ -40,7 +40,7 @@ import Seeder from '../controller/seeder/index.js';
 import { login } from '../controller/auth/karyawan/index.js';
 import { login as loginDashboard } from '../controller/auth/dashboard/index.js';
 import { PengajuanAbsensi, UpdateAbsensi } from '../controller/transaksi/absensi/index.js';
-import { GetAbsensi } from '../controller/absensi/index.js';
+import { GetPengajuan } from '../controller/absensi/index.js';
 import { createUsers } from '../controller/users/index.js';
 import seedKategoriPenilaian from '../controller/penilaian/seeder-penilaian.js';
 import { generatePeriode, getAllPeriode, getPeriodeByRole, updatePeriode } from '../controller/penilaian/generate-penilaian/index.js';
@@ -96,13 +96,12 @@ router.post('/api/auth-employe', login);
 //auth dashboard
 router.post('/api/admin/login', loginDashboard);
 
-//absensi
-router.get('/api/get-absensi', GetAbsensi); 
 
 // transaksi presensi
 router.post('/api/presensi/check-in', PresensiCheckin);
 router.post('/api/presensi/check-out', PresensiCheckout);
 // transaksi absensi
+router.get('/api/get-pengajuan', GetPengajuan); 
 router.post('/api/absensi', PengajuanAbsensi)
 router.post('/api/update-absensi', UpdateAbsensi);
 

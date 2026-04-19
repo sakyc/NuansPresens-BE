@@ -27,47 +27,93 @@ cron.schedule('* * * * *', async () => {
     }
 });
 
-cron.schedule('55 06 * * *', async () => {
+cron.schedule('15 09 * * *', async () => {
     console.log('--- Menjalankan Cron: Cek Alfa ---');
+    
+    // 1. Cek Hari (Lewati jika Sabtu(6) atau Minggu(0))
+    const dayOfWeek = new Date().getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+        console.log('Hari libur akhir pekan, cron dibatalkan.');
+        return;
+    }
+
     const t = await db.transaction();
     const today = new Date().toISOString().split('T')[0];
 
     try {
-        // 1. Ambil aturan ALFA dari database secara dinamis
+        // 2. Ambil Aturan Pinalti Alfa
         const alfaRule = await PointRule.findOne({
-            where: { operator: 'ALFA' }, // Mencari rule dengan operator 'ALFA'
+            where: { operator: 'ALFA' }, 
             transaction: t
         });
 
-        // Jika aturan tidak ditemukan di DB, gunakan default -50
-        const pinaltiAlfa = alfaRule.point_value ;
-        const namaAturan = alfaRule.nama_aturan ;
+        if (!alfaRule) {
+            console.error('Aturan ALFA tidak ditemukan di database!');
+            await t.rollback();
+            return;
+        }
 
+        const pinaltiAlfa = alfaRule.point_value; // Contoh: -50
+        const namaAturan = alfaRule.nama_aturan;
+
+        // 3. Ambil Semua Karyawan
         const daftarKaryawan = await Karyawan.findAll({ transaction: t });
 
         for (let karyawan of daftarKaryawan) {
-            const absenHariIni = await Presensi.findOne({
-                where: { karyawan_id: karyawan.id, tanggal: today },
+            // A. Cek apakah sudah absen masuk hari ini
+            const sudahPresensi = await Presensi.findOne({
+                where: { 
+                    karyawan_id: karyawan.id, 
+                    tanggal: today 
+                },
                 transaction: t
             });
 
-            if (!absenHariIni) {
-                const saldoBaru = karyawan.point_karyawan  + pinaltiAlfa;
+            // B. Jika BELUM presensi, cek apakah dia punya Izin/Sakit/Cuti yang APPROVED
+            if (!sudahPresensi) {
+                const sedangIzin = await Absensi.findOne({
+                    where: {
+                        karyawan_id: karyawan.id,
+                        status: 'approved',
+                        tanggal_mulai: { [Op.lte]: today }, // Mulai <= hari ini
+                        tanggal_selesai: { [Op.gte]: today } // Selesai >= hari ini
+                    },
+                    transaction: t
+                });
 
-                await karyawan.update({ point_karyawan: saldoBaru }, { transaction: t });
+                // C. Jika tidak ada data Presensi DAN tidak ada data Absensi, maka ALFA
+                if (!sedangIzin) {
+                    const saldoBaru = karyawan.point_karyawan + pinaltiAlfa;
 
-                await PointRiwayat.create({
-                    user_id: karyawan.user_id,
-                    type_transaksi: 'PENALTY',
-                    jumlah_point: pinaltiAlfa,
-                    point_saat_ini: saldoBaru,
-                    keterangan: `${namaAturan} (${today})`
-                }, { transaction: t });
+                    // Update Poin Karyawan
+                    await karyawan.update(
+                        { point_karyawan: saldoBaru }, 
+                        { transaction: t }
+                    );
+
+                    // Catat di Riwayat Poin
+                    await PointRiwayat.create({
+                        user_id: karyawan.user_id,
+                        type_transaksi: 'PENALTY',
+                        jumlah_point: pinaltiAlfa,
+                        point_saat_ini: saldoBaru,
+                        keterangan: `${namaAturan} (${today})`
+                    }, { transaction: t });
+
+                    console.log(`[ALFA] ${karyawan.nama}: Poin dipotong ${pinaltiAlfa}`);
+                } else {
+                    console.log(`[IZIN] ${karyawan.nama}: Tidak hadir karena ${sedangIzin.keterangan}`);
+                }
+            } else {
+                console.log(`[HADIR] ${karyawan.nama}: Sudah absen.`);
             }
         }
+
         await t.commit();
+        console.log('--- Cron Selesai: Semua data berhasil diproses ---');
+
     } catch (error) {
-        await t.rollback();
-        console.error('Gagal pinalti alfa:', error);
+        if (t) await t.rollback();
+        console.error('Gagal menjalankan pinalti alfa:', error);
     }
 });

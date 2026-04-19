@@ -1,7 +1,7 @@
 import { FlexibilityItemInc, Karyawan, UserTokenInc } from "../../models/index.js";
 import karyawan from "../../models/karyawan/index.js";
 import PointRiwayat from "../../models/TABLE_POINT/point_riwayat/index.js";
-import { Sequelize } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import dayjs from "dayjs";
 
 
@@ -56,6 +56,7 @@ let bonusPoint = async (req, res) => {
 let getpoint = async (req, res) => {
     let userId = req.query.user_id;
     try {
+        
         let getPointKaryawan = await Karyawan.findOne({
             where: {
                 user_id: userId
@@ -69,15 +70,28 @@ let getpoint = async (req, res) => {
                 status: "gagal",
             });
         }
+        let getRangking = await Karyawan.count({
+            where: {
+                point_karyawan: {
+                    [Op.gt]: getPointKaryawan.point_karyawan // Op.gt artinya "Greater Than" (>)
+                }
+            }
+        });
+
+        let rank = getRangking + 1;
         res.status(200).json({
             message: "Success",
-            data: getPointKaryawan.point_karyawan,
+            data: {
+                point_karyawan: getPointKaryawan.point_karyawan,
+                rank: rank
+            },
         });
 
     } catch (error) {
         return res.status(500).json({
             message: "Terjadi kesalahan pada server",
             status: "gagal",
+            eror: error.message
             
         });
     }
